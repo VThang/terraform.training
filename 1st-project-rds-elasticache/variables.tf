@@ -12,5 +12,6 @@ variable "project-avaiable-zone1" {
 
 variable "project-avaiable-zone2" {
   description = "ID of AZ2"
+  type        = string
   default     = "apse1-az2"
 }
