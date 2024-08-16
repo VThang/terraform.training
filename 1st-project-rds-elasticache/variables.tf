@@ -5,13 +5,13 @@ variable "project-prefix" {
 }
 
 variable "project-avaiable-zone1" {
-  description = "ID of AZ1"
+  description = "Name of AZ1"
   type        = string
-  default     = "apse1-az1"
+  default     = "ap-southeast-1a"
 }
 
 variable "project-avaiable-zone2" {
-  description = "ID of AZ2"
+  description = "Name of AZ2"
   type        = string
-  default     = "apse1-az2"
+  default     = "ap-southeast-1b"
 }
