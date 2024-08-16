@@ -84,7 +84,7 @@ resource "aws_route_table_association" "devops-test-1stproject-rtb-private-assoc
 resource "aws_subnet" "devops-test-1stproject-subnet-public-1" {
   vpc_id               = aws_vpc.devops-test-1stproject-vpc.id
   cidr_block           = "10.0.10.0/24"
-  availability_zone_id = var.project-avaiable-zone1
+  availability_zone = var.project-avaiable-zone1
   tags = {
     "Name" = "${var.project-prefix}subnet-public1"
   }
@@ -94,7 +94,7 @@ resource "aws_subnet" "devops-test-1stproject-subnet-public-1" {
 resource "aws_subnet" "devops-test-1stproject-subnet-public-2" {
   vpc_id               = aws_vpc.devops-test-1stproject-vpc.id
   cidr_block           = "10.0.20.0/24"
-  availability_zone_id = var.project-avaiable-zone2
+  availability_zone = var.project-avaiable-zone2
   tags = {
     "Name" = "${var.project-prefix}subnet-public2"
   }
@@ -104,7 +104,7 @@ resource "aws_subnet" "devops-test-1stproject-subnet-public-2" {
 resource "aws_subnet" "devops-test-1stproject-subnet-private-1" {
   vpc_id               = aws_vpc.devops-test-1stproject-vpc.id
   cidr_block           = "10.0.11.0/24"
-  availability_zone_id = var.project-avaiable-zone1
+  availability_zone = var.project-avaiable-zone1
   tags = {
     "Name" = "${var.project-prefix}subnet-private1"
   }
@@ -114,7 +114,7 @@ resource "aws_subnet" "devops-test-1stproject-subnet-private-1" {
 resource "aws_subnet" "devops-test-1stproject-subnet-private-2" {
   vpc_id               = aws_vpc.devops-test-1stproject-vpc.id
   cidr_block           = "10.0.21.0/24"
-  availability_zone_id = var.project-avaiable-zone2
+  availability_zone = var.project-avaiable-zone2
   tags = {
     "Name" = "${var.project-prefix}subnet-private2"
   }
