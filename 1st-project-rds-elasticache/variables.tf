@@ -15,3 +15,30 @@ variable "project-avaiable-zone2" {
   type        = string
   default     = "ap-southeast-1b"
 }
+
+variable "rds-master-username" {
+  description = "RDS username"
+  type        = string
+  default     = "admin"
+}
+
+variable "rds-master-password" {
+  description = "RDS username"
+  type        = string
+  default     = "6ltM75Gq7c4g8Spw"
+  sensitive   = true
+}
+
+variable "rds-database-name" {
+  type    = string
+  default = "studentsdb"
+}
+
+variable "rds-engine" {
+  type    = string
+  default = "aurora-mysql"
+}
+variable "rds-engine-version" {
+  type    = string
+  default = "8.0.mysql_aurora.3.07.0"
+}
