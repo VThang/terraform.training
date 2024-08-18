@@ -108,19 +108,19 @@ resource "aws_security_group_rule" "devops-test-1stproject-sg-rule-webserver-ssh
   ]
 }
 
-resource "aws_security_group_rule" "devops-test-1stproject-sg-rule-webserver-ssh-ingress-2" {
-  description              = "Allow SSH access from Bastion"
-  type                     = "ingress"
-  protocol                 = "udp"
-  from_port                = 22
-  to_port                  = 22
-  source_security_group_id = aws_security_group.devops-test-1stproject-sg-bastion.id
-  security_group_id        = aws_security_group.devops-test-1stproject-sg-webserver.id
-  depends_on = [
-    aws_security_group.devops-test-1stproject-sg-webserver,
-    aws_security_group.devops-test-1stproject-sg-bastion
-  ]
-}
+# resource "aws_security_group_rule" "devops-test-1stproject-sg-rule-webserver-ssh-ingress-2" {
+#   description              = "Allow SSH access from Bastion"
+#   type                     = "ingress"
+#   protocol                 = "udp"
+#   from_port                = 22
+#   to_port                  = 22
+#   source_security_group_id = aws_security_group.devops-test-1stproject-sg-bastion.id
+#   security_group_id        = aws_security_group.devops-test-1stproject-sg-webserver.id
+#   depends_on = [
+#     aws_security_group.devops-test-1stproject-sg-webserver,
+#     aws_security_group.devops-test-1stproject-sg-bastion
+#   ]
+# }
 
 resource "aws_security_group_rule" "devops-test-1stproject-sg-rule-webserver-http-ingress" {
   description              = "Allow HTTP access from ALB"
@@ -148,16 +148,17 @@ resource "aws_security_group_rule" "devops-test-1stproject-sg-rule-webserver-sel
 }
 
 resource "aws_security_group_rule" "devops-test-1stproject-sg-rule-webserver-egress" {
-  description              = "Allow connect to Database"
-  type                     = "egress"
-  protocol                 = "all"
-  from_port                = 0
-  to_port                  = 0
-  source_security_group_id = aws_security_group.devops-test-1stproject-sg-webserver.id
-  security_group_id        = aws_security_group.devops-test-1stproject-sg-webserver.id
+  description = "Allow all traffic"
+  type        = "egress"
+  protocol    = "all"
+  from_port   = 0
+  to_port     = 0
+  # source_security_group_id = aws_security_group.devops-test-1stproject-sg-webserver.id
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.devops-test-1stproject-sg-webserver.id
   depends_on = [
     aws_security_group.devops-test-1stproject-sg-webserver,
-    aws_security_group.devops-test-1stproject-sg-elasticache
+    # aws_security_group.devops-test-1stproject-sg-elasticache
   ]
 }
 

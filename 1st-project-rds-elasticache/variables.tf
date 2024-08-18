@@ -42,3 +42,13 @@ variable "rds-engine-version" {
   type    = string
   default = "8.0.mysql_aurora.3.07.0"
 }
+
+variable "ec2-bastion-key-name" {
+  type    = string
+  default = "1stproject-bastion-key"
+}
+
+variable "ec2-webserver-key-name" {
+  type    = string
+  default = "1stproject-webserver-key"
+}
