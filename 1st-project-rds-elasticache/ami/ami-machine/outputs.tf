@@ -10,14 +10,14 @@ output "backend-ami-instance-id" {
   value       = aws_instance.backend-ami.id
 }
 
-output "frontend-ami-public-ip" {
-  depends_on  = [aws_instance.frontend-ami]
-  description = "value of frontend-ami public ip"
-  value       = aws_instance.frontend-ami.public_ip
-}
+# output "frontend-ami-public-ip" {
+#   depends_on  = [aws_instance.frontend-ami]
+#   description = "value of frontend-ami public ip"
+#   value       = aws_instance.frontend-ami.public_ip
+# }
 
-output "frontend-ami-instance-id" {
-  depends_on  = [aws_instance.frontend-ami]
-  description = "value of frontend-ami instance id"
-  value       = aws_instance.frontend-ami.id
-}
+# output "frontend-ami-instance-id" {
+#   depends_on  = [aws_instance.frontend-ami]
+#   description = "value of frontend-ami instance id"
+#   value       = aws_instance.frontend-ami.id
+# }
