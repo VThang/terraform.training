@@ -8,6 +8,10 @@ terraform {
     #   source  = "hashicorp/tls"
     #   version = ">= 4.0.4"
     # }
+    null = {
+      source  = "hashicorp/null"
+      version = ">= 3.2.1"
+    }
     awscc = {
       source  = "hashicorp/awscc"
       version = ">= 0.25.0"

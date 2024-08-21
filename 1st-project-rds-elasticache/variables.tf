@@ -52,3 +52,7 @@ variable "ec2-webserver-key-name" {
   type    = string
   default = "1stproject-webserver-key"
 }
+variable "ec2-backend-ami-name" {
+  type    = string
+  default = "1stproject-backend-ami"
+}

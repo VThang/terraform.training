@@ -79,151 +79,113 @@ EOF
   ]
 }
 
+##############################
 
-# resource "aws_network_interface" "webserver1-network-interface" {
-#   subnet_id               = aws_instance.devops-test-1stproject-ec2-webserver-1.subnet_id
-#   private_ip_list_enabled = true
-#   ipv4_prefix_count       = 1
-#   private_ip_list = [
-#     "10.0.10.100"
-#   ]
-#   security_groups = [
-#     aws_security_group.devops-test-1stproject-sg-webserver.id
-#   ]
-# }
-
-# resource "aws_network_interface_attachment" "webserver1-network-interface-attachment" {
-
-# }
-
-# Create backend server instance
-resource "aws_instance" "devops-test-1stproject-ec2-webserver-1" {
-  ami                         = data.aws_ami.ubuntu-24-LTS-amd64-server.id
-  instance_type               = "t2.micro"
-  key_name                    = var.ec2-webserver-key-name
-  subnet_id                   = aws_subnet.devops-test-1stproject-subnet-public-1.id
-  associate_public_ip_address = true
-  availability_zone           = var.project-avaiable-zone1
-  private_ip                  = "10.0.10.99"
-  user_data                   = <<-EOF
-#!/bin/bash
-#Update and upgrade the system
-sudo apt update && sudo apt upgrade -y
-sudo apt install -y python3.12 git python3-pip uvicorn
-
-#Clone the repository
-cd ~ || exit
-git clone https://oauth2:TOKEN@github.com/VThang/DevOpsFoundation.Lab4-backend.git
-cd DevOpsFoundation.Lab4-backend || exit && git checkout terraform-1stproject
-pip install -r requirements.txt --break-system-packages
-
-#Create the service file
-sudo tee /etc/systemd/system/backend.service <<1EOF
-[Unit]
-Description=Backend service
-After=syslog.target network.target
-
-[Service]
-WorkingDirectory=/home/ubuntu/DevOpsFoundation.Lab4-backend
-ExecStart=/usr/bin/uvicorn main:app --reload --log-level debug --host 0.0.0.0 --port 8000
-
-Restart=always
-RestartSec=20
-
-[Install]
-WantedBy=multi-user.target
-1EOF
-
-#Reload the daemon and start the service
-sudo systemctl daemon-reload
-sudo systemctl start backend
-sudo systemctl enable backend
-
-EOF
-  vpc_security_group_ids = [
-    aws_security_group.devops-test-1stproject-sg-webserver.id
-  ]
-  tags = {
-    Name = "${var.project-prefix}ec2-webserver-1"
-  }
-  depends_on = [
-    aws_vpc.devops-test-1stproject-vpc,
-    aws_subnet.devops-test-1stproject-subnet-public-1,
-    aws_security_group.devops-test-1stproject-sg-webserver,
-    var.ec2-webserver-key-name,
-    var.project-avaiable-zone1
-  ]
-}
-
-
-# Create frontend instance
-
-
-# Timer to remove public IP from instance
-resource "time_sleep" "timer-remove-public-ip" {
-  depends_on = [
-    aws_instance.devops-test-1stproject-ec2-webserver-1
-  ]
-
-  create_duration = "20s"
-}
-
-
-# Remove public IP from backend1
-# resource "aws_instance" "devops-test-1stproject-ec2-webserver-1-modified" {
-#   ami                         = data.aws_ami.ubuntu-24-LTS-amd64-server.id
-#   instance_type               = "t2.micro"
-#   key_name                    = var.ec2-webserver-key-name
-#   subnet_id                   = aws_subnet.devops-test-1stproject-subnet-public-1.id
-#   associate_public_ip_address = false
-#   availability_zone           = var.project-avaiable-zone1
-#   private_ip                  = "10.0.10.100"
-#   vpc_security_group_ids = [
-#     aws_security_group.devops-test-1stproject-sg-webserver.id
-#   ]
-#   tags = {
-#     Name = "${var.project-prefix}ec2-webserver-1"
-#   }
-#   depends_on = [
-#     aws_instance.devops-test-1stproject-ec2-webserver-1
-#   ]
-# }
-
-# import {
-#   to = aws_network_interface.webserver1-network-interface-modified
-#   id = aws_instance.devops-test-1stproject-ec2-webserver-1.primary_network_interface_id
-# }
-
-
-# resource "aws_network_interface" "webserver1-network-public-destroyed" {
-#   count     = 0
-#   subnet_id = aws_subnet.devops-test-1stproject-subnet-public-1.id
-# }
-
-resource "aws_network_interface_attachment" "webserver1-network-public-detachment" {
-  count                = 0
-  instance_id          = aws_instance.devops-test-1stproject-ec2-webserver-1.id
-  network_interface_id = aws_instance.devops-test-1stproject-ec2-webserver-1.primary_network_interface_id
-  device_index         = 0
-}
-
-resource "aws_network_interface" "webserver1-network-interface-modified" {
-  subnet_id               = aws_instance.devops-test-1stproject-ec2-webserver-1.subnet_id
-  private_ip_list_enabled = true
-  ipv4_prefix_count       = 0
-  private_ip_list = [
+resource "aws_network_interface" "backend1-network-interface-private" {
+  subnet_id = aws_subnet.devops-test-1stproject-subnet-public-1.id
+  private_ips = [
     "10.0.10.100"
   ]
   security_groups = [
     aws_security_group.devops-test-1stproject-sg-webserver.id
   ]
-  depends_on = [aws_network_interface_attachment.webserver1-network-public-detachment]
+  depends_on = [
+    aws_subnet.devops-test-1stproject-subnet-public-1,
+  ]
 }
 
-resource "aws_network_interface_attachment" "webserver1-network-modified-attachment" {
-  count                = 1
-  instance_id          = aws_instance.devops-test-1stproject-ec2-webserver-1.id
-  network_interface_id = aws_network_interface.webserver1-network-interface-modified.id
-  device_index         = 1
-  depends_on           = [aws_network_interface.webserver1-network-interface-modified]
+resource "aws_network_interface" "backend1-network-interface-public" {
+  subnet_id = aws_subnet.devops-test-1stproject-subnet-public-1.id
+  private_ips = [
+    "10.0.10.101"
+  ]
+  security_groups = [
+    aws_security_group.devops-test-1stproject-sg-webserver.id
+  ]
+  depends_on = [
+    aws_subnet.devops-test-1stproject-subnet-public-1,
+  ]
 }
+
+resource "aws_eip" "temporary-public-ip" {
+  domain = "vpc"
+  depends_on = [
+    aws_vpc.devops-test-1stproject-vpc
+  ]
+}
+
+
+# Create backend server instance
+resource "aws_instance" "devops-test-1stproject-ec2-backend1" {
+  ami               = data.aws_ami.ubuntu-24-LTS-amd64-server.id
+  instance_type     = "t2.micro"
+  key_name          = var.ec2-webserver-key-name
+  availability_zone = var.project-avaiable-zone1
+  network_interface {
+    network_interface_id = aws_network_interface.backend1-network-interface-private.id
+    device_index         = 0
+  }
+  tags = {
+    Name = "${var.project-prefix}ec2-backend1"
+  }
+  depends_on = [
+    aws_vpc.devops-test-1stproject-vpc,
+    aws_subnet.devops-test-1stproject-subnet-public-1,
+    aws_security_group.devops-test-1stproject-sg-webserver,
+    aws_network_interface.backend1-network-interface-private,
+    var.ec2-webserver-key-name,
+    var.project-avaiable-zone1
+  ]
+}
+
+# resource "aws_eip_association" "temporary-public-ip-association" {
+#   network_interface_id = aws_network_interface.backend1-network-interface-public.id
+#   allocation_id        = aws_eip.temporary-public-ip.id
+#   depends_on = [
+#     aws_eip.temporary-public-ip,
+#     aws_network_interface.backend1-network-interface-public,
+#     aws_instance.devops-test-1stproject-ec2-backend1
+#   ]
+# }
+
+# resource "aws_network_interface_attachment" "temprary-public-ip-attachment" {
+#   network_interface_id = aws_network_interface.backend1-network-interface-public.id
+#   device_index         = 1
+#   instance_id          = aws_instance.devops-test-1stproject-ec2-backend1.id
+#   depends_on = [
+#     aws_instance.devops-test-1stproject-ec2-backend1,
+#     aws_network_interface.backend1-network-interface-public
+#   ]
+# }
+
+
+# Create frontend instance
+
+
+# # Timer to remove public IP from instance
+# resource "time_sleep" "timer-remove-public-ip" {
+#   depends_on = [
+#     aws_instance.devops-test-1stproject-ec2-backend1
+#   ]
+#   create_duration = "20s"
+# }
+
+# # Disassociate the Elastic IP after the delay
+# # resource "aws_eip_association" "temporary-public-ip-association-after" {
+# #   network_interface_id = aws_network_interface.backend1-network-interface-public.id
+# #   allocation_id        = aws_eip.temporary-public-ip.id
+# #   count                = 0
+# #   depends_on = [
+# #     time_sleep.timer-remove-public-ip
+# #   ]
+# # }
+
+# resource "aws_network_interface_attachment" "temprary-public-ip-attachment-after" {
+#   network_interface_id = aws_network_interface.backend1-network-interface-public.id
+#   device_index         = 1
+#   instance_id          = aws_instance.devops-test-1stproject-ec2-backend1.id
+#   count                = 0
+#   depends_on = [
+#     time_sleep.timer-remove-public-ip,
+#   ]
+# }
