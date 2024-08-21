@@ -35,3 +35,5 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+1st-project-rds-elasticache/ami/ami-creation/.terraform.lock.hcl
+1st-project-rds-elasticache/ami/ami-machine/.terraform.lock.hcl
