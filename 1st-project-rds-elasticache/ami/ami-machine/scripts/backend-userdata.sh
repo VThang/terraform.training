@@ -5,7 +5,7 @@ sudo apt install -y git python3-pip uvicorn
 
 #Clone the repository
 cd /home/ubuntu || exit
-git clone https://oauth2:"${github-clone-token}"@github.com/VThang/DevOpsFoundation.Lab4-backend.git
+git clone https://oauth2:${github-clone-token}@github.com/VThang/DevOpsFoundation.Lab4-backend.git
 cd DevOpsFoundation.Lab4-backend || exit && git checkout terraform-1stproject
 sudo su -c "pip install -r requirements.txt --break-system-packages" -s /bin/sh ubuntu
 
