@@ -37,3 +37,4 @@ override.tf.json
 terraform.rc
 1st-project-rds-elasticache/ami/ami-creation/.terraform.lock.hcl
 1st-project-rds-elasticache/ami/ami-machine/.terraform.lock.hcl
+1st-project-rds-elasticache/.terraform.lock.hcl
