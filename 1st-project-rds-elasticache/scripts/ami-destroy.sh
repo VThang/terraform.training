@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-cd ami/ami-creation || exit
+cd ../ami/ami-creation || exit
 echo "#############################"
 echo "# Destroy AMI Images on AWS #"
 echo "#############################"

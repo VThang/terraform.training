@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-cd ami/ami-machine || exit
-echo "############################################"
-echo "# Creating Base instance for AMI creation  #"
-echo "############################################"
+cd ../ami/ami-machine || exit
+echo "###########################################"
+echo "# Creating Base instance for AMI creation #"
+echo "###########################################"
 terraform apply -auto-approve
 if [[ $? -eq 0 ]]; then
 	echo "##################################################"
@@ -14,6 +14,7 @@ if [[ $? -eq 0 ]]; then
 		sleep 1
 		: $((secs--))
 	done
+	echo "Proceed to next stage: AMI creation"
 
 	cd ../ami-creation || exit
 	echo "#########################################"
@@ -21,7 +22,7 @@ if [[ $? -eq 0 ]]; then
 	echo "#########################################"
 	terraform apply -auto-approve
 
-	cd ../# ami-machine || exit
+	cd ../ami-machine || exit
 	echo "####################################################"
 	echo "# Destroy Base instance after AMI image is created #"
 	echo "####################################################"
