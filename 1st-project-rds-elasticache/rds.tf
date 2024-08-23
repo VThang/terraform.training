@@ -59,3 +59,14 @@ resource "aws_rds_cluster_instance" "devops-test-1stproject-aurora-cluster-insta
     "Name" = "${var.project-prefix}aurora-cluster-instance-reader"
   }
 }
+
+data "local_file" "sql_script" {
+  filename = "${path.module}/scripts/init.sql"
+}
+
+resource "null_resource" "db_setup" {
+  depends_on = []
+  provisioner "local-exec" {
+    command = "mysql --host=${aws_rds_cluster.devops-test-1stproject-aurora-cluster.endpoint} --port=3306 --user=${var.rds-master-username} --password=${var.rds-master-password} --database=${var.rds-database-name} < ${data.local_file.sql_script.content}"
+  }
+}
